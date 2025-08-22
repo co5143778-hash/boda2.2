@@ -266,8 +266,9 @@ function updateCarousel() {
         const maxIndex = Math.max(0, totalSlides - visibleCount);
         if (currentSlide > maxIndex) currentSlide = maxIndex;
 
-        const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 0) || 0;
-        const translateXpx = -(currentSlide * (itemWidth + gap));
+        const styles = getComputedStyle(track);
+const gap = parseFloat(styles.columnGap || styles.gap || 0) || 0;
+const translateXpx = -(currentSlide * (itemWidth + gap));
         track.style.transform = `translateX(${translateXpx}px)`;
         console.log('Carousel moved to slide:', { currentSlide, visibleCount, maxIndex, translateXpx });
     }

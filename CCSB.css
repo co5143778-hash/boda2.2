@@ -667,7 +667,7 @@ body {
 
 /* Cada tarjeta del carrusel */
 .carousel-item {
-    min-width: 12.5%;
+    min-width: calc(100% / 3);
     box-sizing: border-box;
     height: 300px;
     border-radius: 0;
