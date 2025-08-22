@@ -1222,16 +1222,12 @@ button[class*="carousel"] {
 
 @media (max-width: 768px) {
     .carousel-track-container {
-        border: 2px solid #999999; /* Asegura borde en móvil */
+        border: none; /* quitar recuadro en móvil */
     }
     .carousel-track-container::before,
     .carousel-track-container::after {
-        width: 10px;
-        height: 10px;
-        border: 2px solid #999999; /* Asegura color en móvil */
+        content: none !important; /* sin pseudo-elementos en móvil */
     }
-    .carousel-track-container::before { top: 6px; left: 6px; }
-    .carousel-track-container::after { bottom: 6px; right: 6px; }
 }
 
 /* Permitir que las sombras no se recorten en el carrusel */
