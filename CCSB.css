@@ -1177,19 +1177,18 @@ body {
     color: #fff !important;
 }
 
-/* Hide any carousel navigation buttons completely */
+/* Show carousel navigation buttons */
 .carousel-btn,
 .carousel-prev,
 .carousel-next,
 button[id*="nextBtn"],
 button[id*="prevBtn"],
 button[class*="carousel"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
     position: absolute !important;
-    left: -9999px !important;
 }
 
 /* Ensure music icon is visible */
