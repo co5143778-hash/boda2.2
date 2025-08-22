@@ -662,7 +662,7 @@ body {
     transition: transform 0.5s ease-in-out;
     gap: 1rem;
     padding: 1rem;
-    width: 400%;
+    width: auto;
 }
 
 /* Cada tarjeta del carrusel */
@@ -725,7 +725,7 @@ body {
 /* ============================= */
 @media (max-width: 1024px) {
     .carousel-track {
-        width: 600%;
+        width: auto;
     }
     .carousel-item {
         flex: 0 0 16.666%;
@@ -735,7 +735,7 @@ body {
 
 @media (max-width: 768px) {
     .carousel-track {
-        width: 800%; /* no importa mucho: usamos translate por item */
+        width: auto;
     }
     .carousel-item {
         flex: 0 0 100%;

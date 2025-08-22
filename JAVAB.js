@@ -257,12 +257,19 @@ function initializeCarousel() {
 function updateCarousel() {
     const track = document.getElementById('carouselTrack');
     if (track) {
-        // Mover por ancho de un item visible
         const firstItem = track.querySelector('.carousel-item');
-        const itemWidthPercent = firstItem ? (firstItem.getBoundingClientRect().width / track.getBoundingClientRect().width) * 100 : 25;
-        const translateX = -(currentSlide * itemWidthPercent);
-        track.style.transform = `translateX(${translateX}%)`;
-        console.log('Carousel moved to slide:', currentSlide, 'translateX:', translateX);
+        if (!firstItem) return;
+        const container = track.parentElement;
+        const itemWidth = firstItem.getBoundingClientRect().width;
+        const containerWidth = container.getBoundingClientRect().width;
+        const visibleCount = Math.max(1, Math.floor(containerWidth / itemWidth));
+        const maxIndex = Math.max(0, totalSlides - visibleCount);
+        if (currentSlide > maxIndex) currentSlide = maxIndex;
+
+        const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 0) || 0;
+        const translateXpx = -(currentSlide * (itemWidth + gap));
+        track.style.transform = `translateX(${translateXpx}px)`;
+        console.log('Carousel moved to slide:', { currentSlide, visibleCount, maxIndex, translateXpx });
     }
     updateSlideCounter();
     markCenterCarouselItem();
