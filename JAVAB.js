@@ -308,8 +308,13 @@ function markCenterCarouselItem() {
     const items = Array.from(track.querySelectorAll('.carousel-item'));
     if (!items.length) return;
     items.forEach(it => it.classList.remove('is-center'));
-    const desktop = window.innerWidth > 1024;
-    const visibleCount = desktop ? 3 : 1; // heuristic
+
+    const firstItem = items[0];
+    const container = track.parentElement;
+    const itemWidth = firstItem.getBoundingClientRect().width;
+    const containerWidth = container.getBoundingClientRect().width;
+    const visibleCount = Math.max(1, Math.floor(containerWidth / itemWidth));
+
     const centerIndex = (currentSlide + Math.floor(visibleCount / 2)) % items.length;
     items[centerIndex].classList.add('is-center');
 }

@@ -1253,7 +1253,7 @@ button[class*="carousel"] {
 
 
 /* Efecto “sobresalir” del centro solo en desktop */
-@media (min-width: 1025px) {
+@media (min-width: 769px) {
     .carousel-item.is-center { z-index: 2; }
     .carousel-item.is-center .framed-photo {
         transform: scale(1.08) rotate(-0.5deg);
