@@ -2,7 +2,7 @@
 let isPlaying = false;
 let player = null;
 let currentSlide = 0;
-const totalSlides = 12;
+let totalSlides = 0;
 let enableMusic = false;
 
 // Funciones globales para los botones del modal
@@ -224,26 +224,32 @@ function initializeCountdown() {
 function initializeCarousel() {
     const track = document.getElementById('carouselTrack');
     const nextBtn = document.getElementById('nextBtn');
-    
-    // Solo configurar el botón siguiente si existe
+    const prevBtn = document.getElementById('prevBtn');
+
+    if (!track) return;
+
+    // calcular total dinámicamente
+    const items = track.querySelectorAll('.carousel-item');
+    totalSlides = items.length;
+    const totalSlidesElement = document.getElementById('totalSlides');
+    if (totalSlidesElement) totalSlidesElement.textContent = totalSlides;
+
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-            if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-            } else {
-                currentSlide = 0;
-            }
+            currentSlide = (currentSlide + 1) % totalSlides;
             updateCarousel();
         });
     }
-    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        });
+    }
+
     // Auto-play del carrusel
     setInterval(() => {
-        if (currentSlide < totalSlides - 1) {
-            currentSlide++;
-        } else {
-            currentSlide = 0;
-        }
+        currentSlide = (currentSlide + 1) % totalSlides;
         updateCarousel();
     }, 4000);
 }
@@ -251,8 +257,10 @@ function initializeCarousel() {
 function updateCarousel() {
     const track = document.getElementById('carouselTrack');
     if (track) {
-        // Mover una imagen a la vez (25% del ancho total)
-        const translateX = -(currentSlide * 25);
+        // Mover por ancho de un item visible
+        const firstItem = track.querySelector('.carousel-item');
+        const itemWidthPercent = firstItem ? (firstItem.getBoundingClientRect().width / track.getBoundingClientRect().width) * 100 : 25;
+        const translateX = -(currentSlide * itemWidthPercent);
         track.style.transform = `translateX(${translateX}%)`;
         console.log('Carousel moved to slide:', currentSlide, 'translateX:', translateX);
     }
@@ -280,22 +288,21 @@ function previousSlide() {
 
 function updateSlideCounter() {
     const currentSlideElement = document.getElementById('currentSlide');
-    if (currentSlideElement) {
-        currentSlideElement.textContent = currentSlide + 1;
-    }
+    const totalSlidesElement = document.getElementById('totalSlides');
+    if (currentSlideElement) currentSlideElement.textContent = (currentSlide + 1);
+    if (totalSlidesElement) totalSlidesElement.textContent = totalSlides;
 }
 
 // Mark center carousel item on desktop
 function markCenterCarouselItem() {
-    if (window.innerWidth <= 1024) return; // only desktop
     const track = document.getElementById('carouselTrack');
     if (!track) return;
     const items = Array.from(track.querySelectorAll('.carousel-item'));
     if (!items.length) return;
-    // Remove previous center marks
     items.forEach(it => it.classList.remove('is-center'));
-    // Heuristic: center visible index is currentSlide + 1 in 3-up layout
-    const centerIndex = (currentSlide + 1) % items.length;
+    const desktop = window.innerWidth > 1024;
+    const visibleCount = desktop ? 3 : 1; // heuristic
+    const centerIndex = (currentSlide + Math.floor(visibleCount / 2)) % items.length;
     items[centerIndex].classList.add('is-center');
 }
 
